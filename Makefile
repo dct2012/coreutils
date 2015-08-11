@@ -1,19 +1,34 @@
-all: cat echo false true yes
+CFLAGS += -std=c11 -Wall
+
+DEBUG = 0
+ifeq (${DEBUG},0)
+   CFLAGS  += -Os
+else
+   CFLAGS  += -g
+endif
+
+all: cat echo false printf sleep true yes
 
 cat :
-	gcc -std=c11 ./src/cat.c -o ./bin/cat
+	gcc ${CFLAGS} ./src/cat.c -o ./bin/cat
 
 echo :
-	gcc -std=c11 ./src/echo.c -o ./bin/echo
+	gcc ${CFLAGS} ./src/echo.c -o ./bin/echo
 
 false :
-	gcc -std=c11 ./src/false.c -o ./bin/false
+	gcc ${CFLAGS} ./src/false.c -o ./bin/false
+
+printf :
+	gcc ${CFLAGS} ./src/printf.c -o ./bin/printf
+
+sleep :
+	gcc ${CFLAGS} ./src/sleep.c -o ./bin/sleep
 
 true :
-	gcc -std=c11 ./src/true.c -o ./bin/true
+	gcc ${CFLAGS} ./src/true.c -o ./bin/true
 
 yes :
-	gcc -std=c11 ./src/yes.c -o ./bin/yes
+	gcc ${CFLAGS} ./src/yes.c -o ./bin/yes
 
 clean :
 	rm ./bin/*

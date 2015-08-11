@@ -2,8 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-    while(1)
-    {
+    while(1) {
         if(argc == 1)
             putchar('y');
         else

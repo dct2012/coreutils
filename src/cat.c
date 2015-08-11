@@ -9,14 +9,12 @@ int main(int argc, char *argv[])
     int c;
     struct stat s;
 
-    for(int i = 1; i < argc; i++)
-    {
+    for(int i = 1; i < argc; i++) {
         if(stat(argv[i], &s) != 0) 
             printf("cat: %s: No such file or directory\n", argv[i]);
         else if(S_ISDIR(s.st_mode)) 
             printf("cat: %s: Is a directory\n", argv[i]);
-        else
-        {
+        else {
             file = fopen(argv[i], "r");
 
             while((c = fgetc(file)) != EOF)

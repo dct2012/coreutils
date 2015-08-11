@@ -95,7 +95,7 @@ My implementation of the gnu coreutils
 |readlink | Displays value of a symbolic link
 |runcon | Run command with specified security context
 |seq | Prints a sequence of numbers
-|sleep | Delays for a specified amount of time
+|~~sleep~~ | ~~Delays for a specified amount of time~~
 |stat | Returns data about an inode
 |stdbuf | Controls buffering for commands that use stdio
 |stty | Changes and prints terminal line settings
