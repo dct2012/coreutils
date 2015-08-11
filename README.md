@@ -78,7 +78,7 @@ My implementation of the gnu coreutils
 |env | Displays and modifies environment variables
 |expr | Evaluates expressions
 |factor | Factors numbers
-|false | Does nothing, but exits unsuccessfully
+|~~false~~ | ~~Does nothing, but exits unsuccessfully~~
 |groups | Prints the groups of which the user is a member
 |hostid | Prints the numeric identifier for the current host
 |id | Prints real/effective UID and GID
@@ -102,7 +102,7 @@ My implementation of the gnu coreutils
 |tee | Sends output to multiple files
 |test | Evaluates an expression
 |timeout | Run a command with a time limit
-|true | Does nothing, but exits successfully
+|~~true~~ | ~~Does nothing, but exits successfully~~
 |tty | Prints terminal name
 |uname | Prints system information
 |unlink | Removes the specified file using the unlink function
