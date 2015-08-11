@@ -110,4 +110,4 @@ My implementation of the gnu coreutils
 |users | Prints the user names of users currently logged into the current host
 |who | Prints a list of all users currently logged in
 |whoami | Prints the effective userid
-|yes | Prints a string repeatedly
+|~~yes~~ | ~~Prints a string repeatedly~~

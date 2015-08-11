@@ -1,4 +1,4 @@
-all: echo cat true false
+all: cat echo false true yes
 
 cat :
 	gcc -std=c11 ./src/cat.c -o ./bin/cat
@@ -11,6 +11,9 @@ false :
 
 true :
 	gcc -std=c11 ./src/true.c -o ./bin/true
+
+yes :
+	gcc -std=c11 ./src/yes.c -o ./bin/yes
 
 clean :
 	rm ./bin/*
