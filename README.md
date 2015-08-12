@@ -3,7 +3,9 @@ This is my implementation of the gnu coreutils. I'm only going to be implementin
 that Plan 9 implements. I may add some utilities that are not in coreutils as well, like possibly
 grep, I'll probably give those the title of system utilities. 
 
-|File utilities| |
+File utilities
+--------------
+|cmd|description|
 |-------|------|
 |chcon |	Changes file security context (SELinux)
 |chgrp | Changes file group ownership
@@ -31,7 +33,9 @@ grep, I'll probably give those the title of system utilities.
 |truncate | Shrink or extend the size of a file to the specified size
 |vdir | Is exactly like "ls -l -b". (Files are by default listed in long format.)
 
-|Text utilities| |
+Text utilities
+--------------
+|cmd|description|
 |------|-----|
 |base64 | base64 encode/decode data and print to standard output
 |~~cat~~ | ~~Concatenates and prints files on the standard output~~
@@ -68,7 +72,9 @@ grep, I'll probably give those the title of system utilities.
 |uniq | Removes duplicate lines from a sorted file
 |wc | Prints the number of bytes, words, and lines in files
 
-|Shell utilities | |
+Shell utilities
+---------------
+|cmd|description|
 |----|----|
 |arch | Prints machine hardware name (same as uname -m)
 |basename | Removes the path prefix from a given pathname
