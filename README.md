@@ -1,5 +1,7 @@
 # coreutils
-My implementation of the gnu coreutils
+This is my implementation of the gnu coreutils. I'm only going to be implementing the arguments
+that Plan 9 implements. I may add some utilities that are not in coreutils as well, like possibly
+grep, I'll probably give those the title of system utilities. 
 
 |File utilities| |
 |-------|------|
