@@ -7,7 +7,7 @@ else
    CFLAGS  += -g
 endif
 
-all: cat echo false printf sleep true yes
+all: cat echo false printf pwd sleep true yes
 
 cat :
 	gcc ${CFLAGS} ./src/cat.c -o ./bin/cat
@@ -20,6 +20,9 @@ false :
 
 printf :
 	gcc ${CFLAGS} ./src/printf.c -o ./bin/printf
+
+pwd :
+	gcc ${CFLAGS} ./src/pwd.c -o ./bin/pwd
 
 sleep :
 	gcc ${CFLAGS} ./src/sleep.c -o ./bin/sleep
