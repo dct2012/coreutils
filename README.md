@@ -111,7 +111,7 @@ Shell utilities
 |test | Evaluates an expression
 |timeout | Run a command with a time limit
 |~~true~~ | ~~Does nothing, but exits successfully~~
-|tty | Prints terminal name
+|~~tty~~ | ~~Prints terminal name~~
 |uname | Prints system information
 |unlink | Removes the specified file using the unlink function
 |uptime | Tells how long the system has been running
