@@ -1,3 +1,5 @@
+Things to do besides code:make sure everything has usage, decide what's has to be had to have a running system.
+
 |cmd|info|
 |---|---|
 |~~1a~~||
