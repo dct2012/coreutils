@@ -23,14 +23,14 @@ LIBOBJ := $(patsubst $(LIBDIR)/%,$(BUILDDIR)/%,$(LIBS:.cpp=.o))
 
 INC := -I include
 
-lib :
-	g++ ${CPPFLAGS} $(INC) -c $(LIBS) -o $(LIBOBJ)
+build/%.o : lib/File/%.cpp
+	g++ ${CPPFLAGS} $(INC) -c $< -o $@
 
-cp : build/File.o
+cp : build/FileReader.o build/FileCreator.o
 	g++ ${CPPFLAGS} $(INC) -c src/cp.cpp -o build/cp.o
-	g++ ${CPPFLAGS} -o bin/cp build/cp.o build/File.o
+	g++ ${CPPFLAGS} -o bin/cp build/cp.o build/FileReader.o build/FileCreator.o
 
-all : $(cp) $(lib)
+all : $(cp) $(LIBOBJ)
 
 # $(BINDIR)/% : $(SRCDIR)/%.cpp
 # 	g++ ${CPPFLAGS} $< -o $@
@@ -39,4 +39,4 @@ clean :
 	rm bin/*
 	rm build/*
 
-.PHONY: all lib commands clean
+.PHONY: all LIBOBJ cp
