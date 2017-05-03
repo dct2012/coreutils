@@ -11,32 +11,29 @@ else
 endif
 
 SRCDIR = src
-LIBDIR = lib
 BUILDDIR = build
 BINDIR = bin
 
 SRC := $(wildcard $(SRCDIR)/*.cpp)
 BIN := $(SRC:$(SRCDIR)/%.cpp=$(BINDIR)/%)
 
-LIBS := $(shell find $(LIBDIR) -type f -name *.cpp)
-LIBOBJ := $(patsubst $(LIBDIR)/%,$(BUILDDIR)/%,$(LIBS:.cpp=.o))
-
 INC := -I include
+
+all : $(BIN)
 
 build/%.o : lib/File/%.cpp
 	g++ ${CPPFLAGS} $(INC) -c $< -o $@
 
-cp : build/FileOperations.o build/FileReader.o build/FileCreator.o
+bin/cp : build/FileOperations.o build/FileReader.o build/FileCreator.o
 	g++ ${CPPFLAGS} $(INC) -c src/cp.cpp -o build/cp.o
 	g++ ${CPPFLAGS} -o bin/cp build/cp.o build/FileOperations.o build/FileReader.o build/FileCreator.o
 
-all : $(cp) $(LIBOBJ)
-
-# $(BINDIR)/% : $(SRCDIR)/%.cpp
-# 	g++ ${CPPFLAGS} $< -o $@
+bin/echo : build/FileOperations.o build/FileReader.o build/FileCreator.o
+	g++ ${CPPFLAGS} $(INC) -c src/echo.cpp -o build/echo.o
+	g++ ${CPPFLAGS} -o bin/echo build/echo.o build/FileOperations.o build/FileReader.o build/FileCreator.o
 
 clean :
 	rm bin/*
 	rm build/*
 
-.PHONY: all LIBOBJ cp
+.PHONY: cp echo

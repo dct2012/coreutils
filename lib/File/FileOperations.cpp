@@ -21,4 +21,9 @@ namespace FileOperations
         std::cout << "Amount written: " << written << "\n";
         return written;
     }
+
+    void echo(char* source)
+    {
+        fputs(source, stdout);
+    }
 }

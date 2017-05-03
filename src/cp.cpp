@@ -4,7 +4,7 @@
 int main(int argc, char *argv[])
 {
     if(argc != 3) {
-        puts("Print Help");
+        std::cout << "Print Help\n";
         return 1; //error
     } else {
         FileOperations::filecopy(argv[1], argv[2]);
