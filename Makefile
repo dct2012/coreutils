@@ -26,9 +26,9 @@ INC := -I include
 build/%.o : lib/File/%.cpp
 	g++ ${CPPFLAGS} $(INC) -c $< -o $@
 
-cp : build/FileReader.o build/FileCreator.o
+cp : build/FileOperations.o build/FileReader.o build/FileCreator.o
 	g++ ${CPPFLAGS} $(INC) -c src/cp.cpp -o build/cp.o
-	g++ ${CPPFLAGS} -o bin/cp build/cp.o build/FileReader.o build/FileCreator.o
+	g++ ${CPPFLAGS} -o bin/cp build/cp.o build/FileOperations.o build/FileReader.o build/FileCreator.o
 
 all : $(cp) $(LIBOBJ)
 
