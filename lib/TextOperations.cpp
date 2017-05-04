@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <iostream>
 #include "TextOperations.h"
 
 namespace TextOperations
@@ -6,10 +6,10 @@ namespace TextOperations
     void echo(int length, char** string)
     {
         for(int i = 1; i < length; i++) {
-            fputs(string[i], stdout);
+            std::cout << string[i];;
             if(i + 1 != length) //place space between strings
-                putchar(' ');
+                std::cout << " ";
         }
-        putchar('\n');
+        std::cout << "\n";
     }
 }
