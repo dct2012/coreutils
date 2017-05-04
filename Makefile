@@ -35,6 +35,15 @@ bin/echo : build/TextOperations.o
 	g++ ${CPPFLAGS} $(INC) -c src/echo.cpp -o build/echo.o
 	g++ ${CPPFLAGS} -o bin/echo build/echo.o build/TextOperations.o
 
+bin/false :
+	g++ ${CPPFLAGS} -o bin/false src/false.cpp
+
+bin/true :
+	g++ ${CPPFLAGS} -o bin/true src/true.cpp
+
+bin/yes :
+	g++ ${CPPFLAGS} -o bin/yes src/yes.cpp
+
 clean :
 	rm bin/*
 	rm build/*

@@ -1,14 +1,14 @@
-#include <stdio.h>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
     while(1) {
         if(argc == 1)
-            putchar('y');
+            std::cout << "y";
         else
             for(int i = 1; i < argc; i++)
-                printf("%s ", argv[i]);
-        putchar('\n');
+                std::cout << argv[i] << " ";
+        std::cout << "\n";
     }
 
     return 0;
