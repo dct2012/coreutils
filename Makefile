@@ -35,6 +35,9 @@ bin/cat : build/FileOperations.o build/FileReader.o build/FileCreator.o build/Fi
 	g++ ${CPPFLAGS} $(INC) -c src/cat.cpp -o build/cat.o
 	g++ ${CPPFLAGS} -o bin/cat build/cat.o build/FileOperations.o build/FileReader.o build/FileCreator.o build/FileStat.o
 
+bin/date :
+	g++ ${CPPFLAGS} -o bin/date src/date.cpp
+
 bin/echo : build/TextOperations.o
 	g++ ${CPPFLAGS} $(INC) -c src/echo.cpp -o build/echo.o
 	g++ ${CPPFLAGS} -o bin/echo build/echo.o build/TextOperations.o

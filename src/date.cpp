@@ -1,12 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
 #include <time.h>
 
 int main(int argc, char *argv[])
 {
     time_t now;
     time(&now);
-    fputs(ctime(&now), stdout);
+    std::cout << ctime(&now);
 
     exit(EXIT_SUCCESS);
 }
