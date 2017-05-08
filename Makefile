@@ -27,9 +27,13 @@ build/%.o : lib/%.cpp
 build/%.o : lib/File/%.cpp
 	g++ ${CPPFLAGS} $(INC) -c $< -o $@
 
-bin/cp : build/FileOperations.o build/FileReader.o build/FileCreator.o
+bin/cp : build/FileOperations.o build/FileReader.o build/FileCreator.o build/FileStat.o
 	g++ ${CPPFLAGS} $(INC) -c src/cp.cpp -o build/cp.o
-	g++ ${CPPFLAGS} -o bin/cp build/cp.o build/FileOperations.o build/FileReader.o build/FileCreator.o
+	g++ ${CPPFLAGS} -o bin/cp build/cp.o build/FileOperations.o build/FileReader.o build/FileCreator.o build/FileStat.o
+
+bin/cat : build/FileOperations.o build/FileReader.o build/FileCreator.o build/FileStat.o
+	g++ ${CPPFLAGS} $(INC) -c src/cat.cpp -o build/cat.o
+	g++ ${CPPFLAGS} -o bin/cat build/cat.o build/FileOperations.o build/FileReader.o build/FileCreator.o build/FileStat.o
 
 bin/echo : build/TextOperations.o
 	g++ ${CPPFLAGS} $(INC) -c src/echo.cpp -o build/echo.o

@@ -6,7 +6,7 @@ FileReader::FileReader(char* file)
         this->file = open(file, O_RDONLY, 0);
     }
     catch(int e){
-        std::cout << "File Constructor Failed: " << e << "\n";
+        std::cout << "File Constructor Failed: " << e << std::endl;
     }
 }
 
