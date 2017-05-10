@@ -6,3 +6,8 @@ ArgumentBase::ArgumentBase(std::string shortOption, std::string longOption, bool
     this->longOption = longOption;
     this->value = value;
 }
+
+bool ArgumentBase::getValue()
+{
+    return this->value;
+}

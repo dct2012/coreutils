@@ -1,4 +1,5 @@
 #include <string>
+#include <map>
 #include "ArgumentBase.h"
 
 class ArgumentCollection
@@ -6,7 +7,6 @@ class ArgumentCollection
     protected:
         std::map<std::string, ArgumentBase*>* arguments;
         void createArguments(std::string**);
-        void createHelpMessage(std::string**);
         void parseCommandLineArguments(int, char**);
 
     public:

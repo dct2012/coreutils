@@ -4,16 +4,17 @@
 ArgumentCollection::ArgumentCollection(int argc, char** argv, std::string** argumentDefinitions)
 {
     this->createArguments(argumentDefinitions);
-    this->createHelpMessage(argumentDefinitions);
     this->parseCommandLineArguments(argc, argv);
 }
 
 void ArgumentCollection::createArguments(std::string** argumentDefinitions)
 {
-    for(std::string** argumentDefinition :  std::string** argumentDefinitions) {
+    for(std::string* argumentDefinition : argumentDefinitions) {
         ArgumentBase* temp = NULL;
         if(argumentDefinition[0] == "base") {
-
+            temp = new ArgumentBase(argumentDefinition[1], argumentDefinition[2], argumentDefinition[3]);
+            this->arguments[argumentDefinition[1]] = temp;
+            this->arguments[argumentDefinition[2]] = temp;
         }
     }
 }
