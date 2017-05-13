@@ -1,17 +1,14 @@
 #include "HelpMessage.h"
 
-HelpMessage::HelpMessage(std::string header, std::string* argumentDefinitions)
+HelpMessage::HelpMessage(std::string header, std::vector<std::vector<std::string>> argumentDefinitions)
 {
-    this->help += header;
-    for(std::string argumentDefinition : argumentDefinitions) {
-        this->help += "-" + argumentDefinition[1] + ", --" + argumentDefinition[2];
-        if(argumentDefinition[0] == "base") {
-            this->help += "\n";
+    this->help += header + "\n";
+    for(unsigned int i = 0; i < argumentDefinitions[0].size(); i++) {
+        this->help += " -" + argumentDefinitions[i][1] + ", --" + argumentDefinitions[i][2];
+        if(argumentDefinitions[i][0] != "base") {
+            this->help += " " + argumentDefinitions[i][2];
         }
-        else {
-            this->help += " " + argumentDefinition[2] + "\n";
-        }
-        this->help += argumentDefinition[4] + "\n";
+        this->help += "\t" + argumentDefinitions[i][4] + "\n";
     }
 }
 std::string HelpMessage::getHelp()

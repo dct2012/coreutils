@@ -8,6 +8,8 @@ class ArgumentBase
         bool value;
 
     public:
-        ArgumentBase(std::string, std::string, bool);
+        ArgumentBase(std::string, std::string, std::string);
         bool getValue();
+        void set(std::string);
+        std::string getToString();
 };

@@ -1,15 +1,19 @@
 #include <string>
 #include <map>
+#include <vector>
 #include "ArgumentBase.h"
 
 class ArgumentCollection
 {
     protected:
-        std::map<std::string, ArgumentBase*>* arguments;
-        void createArguments(std::string**);
+        std::map<std::string, std::string>* arguments;
+
+        void createArguments(std::vector<std::vector<std::string>>);
         void parseCommandLineArguments(int, char**);
+        void createArgument(std::string, std::string, std::string);
+        void updateArgument(std::string, std::string);
 
     public:
-        ArgumentCollection(int, char**, std::string**);
+        ArgumentCollection(int, char**, std::vector<std::vector<std::string>>);
         std::string getArgument(std::string);
 };

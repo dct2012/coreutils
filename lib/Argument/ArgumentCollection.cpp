@@ -1,53 +1,96 @@
 #include "ArgumentCollection.h"
+#include <iostream>
 
-
-ArgumentCollection::ArgumentCollection(int argc, char** argv, std::string** argumentDefinitions)
+ArgumentCollection::ArgumentCollection(int argc, char** argv, std::vector<std::vector<std::string>> argumentDefinitions)
 {
     this->createArguments(argumentDefinitions);
-    this->parseCommandLineArguments(argc, argv);
+    //this->parseCommandLineArguments(argc, argv);
 }
 
-void ArgumentCollection::createArguments(std::string** argumentDefinitions)
+void ArgumentCollection::createArguments(std::vector<std::vector<std::string>> argumentDefinitions)
 {
-    for(std::string* argumentDefinition : argumentDefinitions) {
-        ArgumentBase* temp = NULL;
-        if(argumentDefinition[0] == "base") {
-            temp = new ArgumentBase(argumentDefinition[1], argumentDefinition[2], argumentDefinition[3]);
-            this->arguments[argumentDefinition[1]] = temp;
-            this->arguments[argumentDefinition[2]] = temp;
+    for(unsigned int i = 0; i < argumentDefinitions[0].size(); i++) {
+        if(argumentDefinitions[i][0] == "base") {
+            std::cout <<
+                "ArgumentCollection::createArgument(" << argumentDefinitions[i][1] <<
+                ", " << argumentDefinitions[i][2] <<
+                ", " << argumentDefinitions[i][3] <<
+                ");" << std::endl;
+            ;
+            this->createArgument(
+                argumentDefinitions[i][1], argumentDefinitions[i][2], argumentDefinitions[i][3]
+            );
         }
     }
+    std::cout << "leaving createArguments() " << std::endl;
+}
+
+void ArgumentCollection::createArgument(std::string shortOption, std::string longOption, std::string value)
+{
+    std::cout <<
+        "ArgumentCollection::updateArgument(" << shortOption <<
+        ", " << value <<
+        ");" << std::endl;
+    ;
+    this->updateArgument(shortOption, value);
+
+    std::cout <<
+        "ArgumentCollection::updateArgument(" << longOption <<
+        ", " << value <<
+        ");" << std::endl;
+    ;
+    this->updateArgument(longOption, value);
+}
+
+void ArgumentCollection::updateArgument(std::string argument, std::string value)
+{
+    std::pair<std::iterator,bool> ret = this->arguments->emplace(argument, value);
+    if(ret.second == false) {
+        std::cout << "ArgumentCollection::updateArgument: updating" << std::endl;
+        (*this->arguments)[argument] = value;
+    }
+
+    std::cout << "ArgumentCollection::updateArgument: leaving" << std::endl;
 }
 
 void ArgumentCollection::parseCommandLineArguments(int count, char** rawArguments)
 {
-    for(int i = 1; i < count; i++) {
-        std::string argument = rawArguments[i];
+    std::map<std::string, std::string>::iterator it;
+    std::string argument = "";
+
+    for(int i = 0; i < (count - 1); i++) {
+
+        argument = rawArguments[i];
+
         if('-' == argument[0]) {
             while('-' == argument[0]) {
                 argument.erase(0, 1);
             }
-            if(this->arguments.find(argument)) { //cases similar to -h, --help, or -f filename
+            it = this->arguments->find(argument);
+            if(it != this->arguments->end()) { //cases similar to -h, --help, or -f filename
                 if('-' == rawArguments[i + 1][0]) {
-                    this->arguments[argument] =  "true";
+                    this->updateArgument(argument, "true");
                 }
                 else {
-                    this->arguments[argument] = rawArguments[i + 1];
+                    this->updateArgument(argument, rawArguments[i + 1]);
                     i++;
                 }
             }
-            else if(args.find(argument[0])) { //cases similar to -pjklf filename
-                for(int j = 0; j < argument.length(); j++) {
-                    if(j == (argument.length() - 1)) {
-                        if('-' == rawArguments[i + 1][0]) {
-                            this->arguments[argument[j]] =  "true";
+            else {
+                it = this->arguments->find(std::string(1, argument[0]));
+                if(it != this->arguments->end()) { //cases similar to -pjklf filename
+                    for(unsigned int j = 0; j < argument.length(); j++) {
+                        if(j == (argument.length() - 1)) {
+                            if('-' == rawArguments[i + 1][0]) {
+                                this->updateArgument(std::string(1, argument[j]), "true");
+                            }
+                            else {
+                                this->updateArgument(std::string(1, argument[j]), rawArguments[i + 1]);
+                                i++;
+                            }
+                        } else {
+                            this->updateArgument(std::string(1, argument[j]), "true");
                         }
-                        else {
-                            this->arguments[argument[j]] = rawArguments[i + 1];
-                            i++;
-                        }
-                    } else {
-                        this->arguments[argument[j]] =  "true";
                     }
                 }
             }
@@ -57,5 +100,5 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
 
 std::string ArgumentCollection::getArgument(std::string argumentName)
 {
-    return this->arguments[argumentName]; //should be safe
+    return (*this->arguments)[argumentName]; //should be safe
 }
