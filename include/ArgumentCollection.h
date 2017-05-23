@@ -6,7 +6,7 @@
 class ArgumentCollection
 {
     protected:
-        std::map<std::string, std::string>* arguments;
+        std::map<std::string, std::string> arguments;
 
         void createArguments(std::vector<std::vector<std::string>>);
         void parseCommandLineArguments(int, char**);
