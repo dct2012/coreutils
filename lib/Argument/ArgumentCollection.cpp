@@ -20,15 +20,21 @@ void ArgumentCollection::createArguments(std::vector<std::vector<std::string>> a
 
 void ArgumentCollection::createArgument(std::string shortOption, std::string longOption, std::string value)
 {
+    this->shortToLongMap[shortOption] = longOption;
+    this->longToShortMap[longOption] = shortOption;
     this->updateArgument(shortOption, value);
-    this->updateArgument(longOption, value);
 }
 
 void ArgumentCollection::updateArgument(std::string argument, std::string value)
 {
-    std::cout << "ArgumentCollection::updateArgument("
-        << argument << "," << value << ")" << std::endl;
-    this->arguments.emplace(argument, value);
+    this->arguments[argument] = value;
+
+    std::string otherArgument = (this->shortToLongMap.find(argument) != this->shortToLongMap.end()) ?
+        this->shortToLongMap[argument] :
+        this->longToShortMap.find(argument) != this->longToShortMap.end() ?
+        this->longToShortMap[argument] :
+        throw "Invalid Argument";
+    this->arguments[otherArgument] = value;
 }
 
 void ArgumentCollection::parseCommandLineArguments(int count, char** rawArguments)
@@ -77,5 +83,5 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
 
 std::string ArgumentCollection::getArgument(std::string argumentName)
 {
-    return this->arguments[argumentName]; //should be safe
+    return this->arguments[argumentName]; //should be safe if smaprt programmer
 }
