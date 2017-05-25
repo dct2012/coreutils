@@ -48,9 +48,9 @@ bin/echo : build/TextOperations.o
 bin/false :
 	g++ ${CPPFLAGS} -o bin/false src/false.cpp
 
-bin/mkdir : build/ArgumentCollection.o build/ArgumentBase.o build/HelpMessage.o
+bin/mkdir : build/ArgumentCollection.o build/ArgumentBase.o build/HelpMessage.o build/FileOperations.o build/FileReader.o build/FileCreator.o build/FileStat.o
 	g++ ${CPPFLAGS} $(INC) -c src/mkdir.cpp -o build/mkdir.o
-	g++ ${CPPFLAGS} -o bin/mkdir build/mkdir.o build/ArgumentCollection.o build/ArgumentBase.o build/HelpMessage.o
+	g++ ${CPPFLAGS} -o bin/mkdir build/mkdir.o build/ArgumentCollection.o build/ArgumentBase.o build/HelpMessage.o build/FileOperations.o build/FileReader.o build/FileCreator.o build/FileStat.o
 
 bin/true :
 	g++ ${CPPFLAGS} -o bin/true src/true.cpp

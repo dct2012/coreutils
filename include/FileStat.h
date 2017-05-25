@@ -8,6 +8,6 @@ class FileStat
         struct stat s;
 
     public:
-        FileStat(char*);
+        FileStat(const char*);
         bool isDirectory();
 };

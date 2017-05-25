@@ -1,7 +1,7 @@
 #include "FileStat.h"
 #include <stdexcept>
 
-FileStat::FileStat(char* src)
+FileStat::FileStat(const char* src)
 {
     if(stat(src, &this->s) != 0) {
         char* err = NULL;

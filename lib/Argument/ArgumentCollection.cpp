@@ -46,7 +46,10 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
 
         argument = rawArguments[i];
 
-        if('-' == argument[0]) {
+        if(argument[0] != '-') {
+            this->extras.push_back(argument);
+        }
+        else {
             while(argument[0] == '-') {
                 argument.erase(0, 1);
             }
@@ -84,4 +87,9 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
 std::string ArgumentCollection::getArgument(std::string argumentName)
 {
     return this->arguments[argumentName]; //should be safe if smaprt programmer
+}
+
+std::vector<std::string> ArgumentCollection::getExtras()
+{
+    return this->extras;
 }

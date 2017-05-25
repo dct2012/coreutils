@@ -49,4 +49,50 @@ namespace FileOperations
 
         return false;
     }
+
+    bool pathExists(const char *dir)
+    {
+        try {
+            new FileStat(dir);
+            return true;
+        } catch(int e){
+            return false;
+        }
+    }
+
+    void makedir(const char* dir, mode_t mode, bool vflag)
+    {
+        if(pathExists(dir)) {
+            throw std::string("mkdir: cannot create directory ") + dir + ", file exists";
+        }
+
+        if(mkdir(dir, mode) == -1) {
+            throw std::string("mkdir: cannot create directory ") + dir + ", c mkdir() failed";
+        }
+
+        if(vflag) {
+            std::cout << "mkdir: created directory " << dir << std::endl;
+        }
+    }
+
+    void makedirp(const char *dir, mode_t mode, bool vflag)
+    {
+        //if directory exists leave
+        if(pathExists(dir)) {
+            return;
+        }
+
+        makedir(dir, mode, vflag);
+
+        int i;
+        for(i = std::string(dir).length(); i >= 0; i--) {
+            if(dir[i] == '/') {
+                break;
+            }
+        }
+
+        makedirp(std::string(dir).substr(0, i).c_str(), mode, vflag);
+
+        makedirp(dir, mode, vflag);
+    }
 }
