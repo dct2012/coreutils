@@ -36,4 +36,22 @@ namespace TextOperations
 
         return result;
     }
+
+    mode_t stringToModeT(std::string string)
+    {
+        mode_t result = 0;
+        int others = string.length() - 1;
+        int group = others - 1;
+        int user = group - 1;
+
+        swith(string[user]) {
+            case '7':
+                result |= S_IRUSR | S_IWUSR | S_IXUSR;
+                break;
+            case '6':
+                result |= S_IRUSR | S_IWUSR;
+                break;
+                case
+        }
+    }
 }
