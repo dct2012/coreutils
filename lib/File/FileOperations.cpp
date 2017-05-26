@@ -2,6 +2,7 @@
 #include "FileReader.h"
 #include "FileCreator.h"
 #include "FileStat.h"
+#include "TextOperations.h"
 
 namespace FileOperations
 {
@@ -62,6 +63,7 @@ namespace FileOperations
 
     void makedir(const char* dir, mode_t mode, bool vflag)
     {
+        //TODO: Have destiguishable errors
         if(pathExists(dir)) {
             throw std::string("mkdir: cannot create directory ") + dir + ", file exists";
         }
@@ -82,17 +84,13 @@ namespace FileOperations
             return;
         }
 
-        makedir(dir, mode, vflag);
-
-        int i;
-        for(i = std::string(dir).length(); i >= 0; i--) {
-            if(dir[i] == '/') {
-                break;
-            }
+        std::string path = "";
+        for(std::string directoryName : TextOperations::explode(dir, '/')) {
+            path += directoryName;
+            try {
+                makedir(path.c_str(), mode, vflag);
+            } catch(int e) {/*TODO: proper error handling*/}
+            path += "/";
         }
-
-        makedirp(std::string(dir).substr(0, i).c_str(), mode, vflag);
-
-        makedirp(dir, mode, vflag);
     }
 }

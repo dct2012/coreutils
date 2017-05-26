@@ -1,7 +1,6 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "ArgumentBase.h"
 
 class ArgumentCollection
 {
