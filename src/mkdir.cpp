@@ -2,6 +2,7 @@
 #include "ArgumentCollection.h"
 #include "HelpMessage.h"
 #include "FileOperations.h"
+#include "TextOperations.h"
 
 std::string commandDefinition = "Usage: mkdir [OPTION]... DIRECTORY...\n"
     "Create the DIRECTORY(ies), if they do not already exist.\n";
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
     else {
         ArgumentCollection* argcoll = new ArgumentCollection(argc, argv, argumentDefinitions);
 
-        if(argcoll->getArgument("help") == "true") {
+        if(argcoll->getArgument("help").compare("true") == 0) {
             printHelpMessage();
         } else if(argcoll->getExtras().empty()) {
             std::cerr << "mkdir: missing DIRECTORY(ies)" << std::endl << std::endl;
@@ -39,19 +40,23 @@ int main(int argc, char *argv[])
         else {
             std::vector<std::string> dir = argcoll->getExtras();
 
-            for(unsigned int i = 0; i < dir.size(); i++) {
-                if(argcoll->getArgument("parents") == "true") {
+            //dir[0] == bin/mkdir => i = 1
+            for(unsigned int i = 1; i < dir.size(); i++) {
+                std::string mode = argcoll->getArgument("mode");
+                std::cout << "vflag = " << argcoll->getArgument("verbose") << std::endl;
+                if(argcoll->getArgument("parents").compare("true") == 0) {
                     FileOperations::makedirp(
                         dir[i].c_str(),
-                        std::stoi(argcoll->getArgument("mode"), nullptr),
-                        (argcoll->getArgument("verbose") == "true")
+                        TextOperations::stringToInt(mode),
+                        (argcoll->getArgument("verbose").compare("true") == 0)
                     );
                 }
                 else {
+                    std::cout << "do we make it this far?" << std::endl;
                     FileOperations::makedir(
                         dir[i].c_str(),
-                        std::stoi(argcoll->getArgument("mode"), nullptr),
-                        (argcoll->getArgument("verbose") == "true")
+                        TextOperations::stringToInt(mode),
+                        (argcoll->getArgument("verbose").compare("true") == 0)
                     );
                 }
             }

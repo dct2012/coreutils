@@ -29,11 +29,17 @@ void ArgumentCollection::updateArgument(std::string argument, std::string value)
 {
     this->arguments[argument] = value;
 
-    std::string otherArgument = (this->shortToLongMap.find(argument) != this->shortToLongMap.end()) ?
-        this->shortToLongMap[argument] :
-        this->longToShortMap.find(argument) != this->longToShortMap.end() ?
-        this->longToShortMap[argument] :
-        throw "Invalid Argument";
+    std::string otherArgument;
+    if(this->shortToLongMap.find(argument) != this->shortToLongMap.end()) {
+        otherArgument = this->shortToLongMap[argument];
+    }
+    else if(this->longToShortMap.find(argument) != this->longToShortMap.end()) {
+        otherArgument = this->longToShortMap[argument];
+    }
+    else {
+        throw std::runtime_error("ArgumentColletion::updateArgumentsInvalid Argument");
+    }
+
     this->arguments[otherArgument] = value;
 }
 

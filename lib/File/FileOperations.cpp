@@ -4,6 +4,8 @@
 #include "FileStat.h"
 #include "TextOperations.h"
 
+#include <sstream>
+
 namespace FileOperations
 {
     ssize_t filecopy(char* src, char* dst)
@@ -53,23 +55,22 @@ namespace FileOperations
 
     bool pathExists(const char *dir)
     {
-        try {
-            new FileStat(dir);
-            return true;
-        } catch(int e){
-            return false;
-        }
+        return (access(dir, F_OK) == 0);
     }
 
     void makedir(const char* dir, mode_t mode, bool vflag)
     {
         //TODO: Have destiguishable errors
         if(pathExists(dir)) {
-            throw std::string("mkdir: cannot create directory ") + dir + ", file exists";
+            std::stringstream message;
+            message << "mkdir: cannot create directory " << dir << ", file exists";
+            throw std::runtime_error(message.str());
         }
 
         if(mkdir(dir, mode) == -1) {
-            throw std::string("mkdir: cannot create directory ") + dir + ", c mkdir() failed";
+            std::stringstream message;
+            message << "mkdir: cannot create directory " << dir << ", c mkdir() failed";
+            throw std::runtime_error(message.str());
         }
 
         if(vflag) {
