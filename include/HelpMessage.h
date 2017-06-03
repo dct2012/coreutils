@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <map>
 
 class HelpMessage
 {
@@ -7,6 +8,6 @@ class HelpMessage
         std::string help;
 
     public:
-        HelpMessage(std::string, std::vector<std::vector<std::string>>);
+        HelpMessage(std::string, std::map<std::string, std::map<std::string, std::string>>);
         std::string getHelp();
 };

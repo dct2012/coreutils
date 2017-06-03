@@ -90,7 +90,7 @@ namespace FileOperations
             path += directoryName;
             try {
                 makedir(path.c_str(), mode, vflag);
-            } catch(int e) {/*TODO: proper error handling*/}
+            } catch(std::exception e) {}
             path += "/";
         }
     }

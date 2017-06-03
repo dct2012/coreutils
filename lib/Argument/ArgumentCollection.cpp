@@ -1,87 +1,62 @@
 #include "ArgumentCollection.h"
 #include <iostream>
 
-ArgumentCollection::ArgumentCollection(int argc, char** argv, std::vector<std::vector<std::string>> argumentDefinitions)
+ArgumentCollection::ArgumentCollection(int argc, char** argv, std::map<std::string, std::map<std::string, std::string>> arguments)
 {
-    this->createArguments(argumentDefinitions);
+    this->arguments = arguments;
     this->parseCommandLineArguments(argc, argv);
 }
 
-void ArgumentCollection::createArguments(std::vector<std::vector<std::string>> argumentDefinitions)
+std::map<std::string, std::string>* ArgumentCollection::getArgument(std::string argumentName)
 {
-    for(unsigned int i = 0; i < argumentDefinitions[0].size(); i++) {
-        if(argumentDefinitions[i][0] == "base") {
-            this->createArgument(
-                argumentDefinitions[i][1], argumentDefinitions[i][2], argumentDefinitions[i][3]
-            );
+    for (std::pair<const std::string, std::map<std::string, std::string>>& argument : this->arguments) {
+        if(argument.first.compare(argumentName) == 0 || argument.second["shortOption"].compare(argumentName) == 0) {
+            return &argument.second;
         }
     }
+
+    return nullptr;
 }
 
-void ArgumentCollection::createArgument(std::string shortOption, std::string longOption, std::string value)
+void ArgumentCollection::updateArgument(std::string argumentName, std::string value)
 {
-    this->shortToLongMap[shortOption] = longOption;
-    this->longToShortMap[longOption] = shortOption;
-    this->updateArgument(shortOption, value);
-}
-
-void ArgumentCollection::updateArgument(std::string argument, std::string value)
-{
-    this->arguments[argument] = value;
-
-    std::string otherArgument;
-    if(this->shortToLongMap.find(argument) != this->shortToLongMap.end()) {
-        otherArgument = this->shortToLongMap[argument];
-    }
-    else if(this->longToShortMap.find(argument) != this->longToShortMap.end()) {
-        otherArgument = this->longToShortMap[argument];
-    }
-    else {
+    std::map<std::string, std::string>* argument = this->getArgument(argumentName);
+    if(argument != nullptr) {
+        (*argument)["value"] = value;
+    } else {
         throw std::runtime_error("ArgumentColletion::updateArgumentsInvalid Argument");
     }
-
-    this->arguments[otherArgument] = value;
 }
 
 void ArgumentCollection::parseCommandLineArguments(int count, char** rawArguments)
 {
-    std::map<std::string, std::string>::iterator it;
-    std::string argument = "";
+    // i = 1 to skip command name
+    for(int i = 1; i < count; i++) {
+        std::string argumentName = rawArguments[i];
 
-    for(int i = 0; i < count; i++) {
-
-        argument = rawArguments[i];
-
-        if(argument[0] != '-') {
-            this->extras.push_back(argument);
-        }
-        else {
-            while(argument[0] == '-') {
-                argument.erase(0, 1);
+        if(argumentName[0] != '-') {
+            this->extras.push_back(argumentName);
+        } else {
+            while(argumentName[0] == '-') {
+                argumentName.erase(0, 1);
             }
-            it = this->arguments.find(argument);
-            if(it != this->arguments.end()) { //cases similar to -h, --help, or -f filename
-                std::string value = (i + 1 < count) ?
-                    (('-' != rawArguments[i + 1][0]) ?
-                        rawArguments[i + 1] : "true") :
-                    "true";
 
-                this->updateArgument(argument, value);
-            }
-            else {
-                it = this->arguments.find(std::string(1, argument[0]));
-                if(it != this->arguments.end()) { //cases similar to -pjklf filename
-                    for(unsigned int j = 0; j < argument.length(); j++) {
-                        if(j == (argument.length() - 1)) {
-                            if('-' == rawArguments[i + 1][0]) {
-                                this->updateArgument(std::string(1, argument[j]), "true");
-                            }
-                            else {
-                                this->updateArgument(std::string(1, argument[j]), rawArguments[i + 1]);
-                                i++;
-                            }
+            std::map<std::string, std::string>* argument = this->getArgument(argumentName);
+            if(argument != nullptr) {
+                if((*argument)["hasOptions"].compare("true") == 0 && rawArguments[i + 1][0] != '-') {
+                    (*argument)["value"] = rawArguments[i + 1];
+                } else {
+                    (*argument)["value"] = "true";
+                }
+            } else { //cases similar to -pjklf filename
+                for(unsigned int j = 0; j < argumentName.length(); j++) {
+                    argument = this->getArgument(std::string(1, argumentName[j]));
+                    if(argument != nullptr) {
+                        if((j == (argumentName.length() - 1))&&((i + 1) > count)&&(rawArguments[i + 1][0] != '-')) {
+                            (*argument)["value"] = rawArguments[i + 1];
+                            i++;
                         } else {
-                            this->updateArgument(std::string(1, argument[j]), "true");
+                            (*argument)["value"] = "true";
                         }
                     }
                 }
@@ -90,9 +65,10 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
     }
 }
 
-std::string ArgumentCollection::getArgument(std::string argumentName)
+std::string ArgumentCollection::getArgumentValue(std::string argumentName)
 {
-    return this->arguments[argumentName]; //should be safe if smaprt programmer
+    std::map<std::string, std::string>* argument = this->getArgument(argumentName);
+    return (*argument)["value"]; //should be safe if smart programmer
 }
 
 std::vector<std::string> ArgumentCollection::getExtras()

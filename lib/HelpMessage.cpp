@@ -1,14 +1,14 @@
 #include "HelpMessage.h"
 
-HelpMessage::HelpMessage(std::string header, std::vector<std::vector<std::string>> argumentDefinitions)
+HelpMessage::HelpMessage(std::string header, std::map<std::string, std::map<std::string, std::string>> argumentDefinitions)
 {
     this->help += header + "\n";
-    for(unsigned int i = 0; i < argumentDefinitions[0].size(); i++) {
-        this->help += " -" + argumentDefinitions[i][1] + ", --" + argumentDefinitions[i][2];
-        if(argumentDefinitions[i][0] != "base") {
-            this->help += " " + argumentDefinitions[i][2];
+    for (std::pair<const std::string, std::map<std::string, std::string>>& argument : argumentDefinitions) {
+        this->help += " -" + argument.second["shortOption"] + ", --" + argument.second["longOption"];
+        if(argument.second["hasOptions"] == "true") {
+            this->help += " value";
         }
-        this->help += "\t" + argumentDefinitions[i][4] + "\n";
+        this->help += "\t\t" + argument.second["description"] + "\n";
     }
 }
 std::string HelpMessage::getHelp()

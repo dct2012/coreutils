@@ -7,12 +7,35 @@
 std::string commandDefinition = "Usage: mkdir [OPTION]... DIRECTORY...\n"
     "Create the DIRECTORY(ies), if they do not already exist.\n";
 
-std::vector<std::vector<std::string>> argumentDefinitions = {
-    {"base", "p", "parents", "false", "make parent directories if they do not exist"},
-    {"base", "v", "verbose", "false", "print a message for each directory created"},
-    {"base", "h", "help", "false", "print a help message"},
-    {"string", "m", "mode", "0777", "set file to mode"},
-    {"strings", "", "directories", "", "directories to create if they don't already exist"}
+std::map<std::string, std::map<std::string, std::string>> argumentDefinitions = {
+    {"help", {
+        {"longOption", "help"},
+        {"shortOption", "h"},
+        {"description", "print a help message"},
+        {"hasOptions", "false"},
+        {"value", "false"}
+    }},
+    {"parents", {
+        {"longOption", "parents"},
+        {"shortOption", "p"},
+        {"description", "make parent directories if they do not exist"},
+        {"hasOptions", "false"},
+        {"value", "false"}
+    }},
+    {"verbose", {
+        {"longOption", "verbose"},
+        {"shortOption", "v"},
+        {"description", "print a message for each directory created"},
+        {"hasOptions", "false"},
+        {"value", "false"}
+    }},
+    {"mode", {
+        {"longOption", "mode"},
+        {"shortOption", "h"},
+        {"description", "set file to mode"},
+        {"hasOptions", "true"},
+        {"value", "0777"}
+    }},
 };
 
 HelpMessage help(commandDefinition, argumentDefinitions);
@@ -31,7 +54,12 @@ int main(int argc, char *argv[])
     else {
         ArgumentCollection* argcoll = new ArgumentCollection(argc, argv, argumentDefinitions);
 
-        if(argcoll->getArgument("help").compare("true") == 0) {
+        std::cout << "help: " << argcoll->getArgumentValue("help") << std::endl;
+        std::cout << "parents: " << argcoll->getArgumentValue("parents") << std::endl;
+        std::cout << "verbose: " << argcoll->getArgumentValue("verbose") << std::endl;
+        std::cout << "mode: " << argcoll->getArgumentValue("mode") << std::endl;
+
+        if(argcoll->getArgumentValue("help").compare("true") == 0) {
             printHelpMessage();
         } else if(argcoll->getExtras().empty()) {
             std::cerr << "mkdir: missing DIRECTORY(ies)" << std::endl << std::endl;
@@ -40,23 +68,20 @@ int main(int argc, char *argv[])
         else {
             std::vector<std::string> dir = argcoll->getExtras();
 
-            //dir[0] == bin/mkdir => i = 1
-            for(unsigned int i = 1; i < dir.size(); i++) {
-                std::string mode = argcoll->getArgument("mode");
-                std::cout << "vflag = " << argcoll->getArgument("verbose") << std::endl;
-                if(argcoll->getArgument("parents").compare("true") == 0) {
+            for(unsigned int i = 0; i < dir.size(); i++) {
+                std::string mode = argcoll->getArgumentValue("mode");
+                if(argcoll->getArgumentValue("parents").compare("true") == 0) {
                     FileOperations::makedirp(
                         dir[i].c_str(),
                         TextOperations::stringToInt(mode),
-                        (argcoll->getArgument("verbose").compare("true") == 0)
+                        (argcoll->getArgumentValue("verbose").compare("true") == 0)
                     );
                 }
                 else {
-                    std::cout << "do we make it this far?" << std::endl;
                     FileOperations::makedir(
                         dir[i].c_str(),
                         TextOperations::stringToInt(mode),
-                        (argcoll->getArgument("verbose").compare("true") == 0)
+                        (argcoll->getArgumentValue("verbose").compare("true") == 0)
                     );
                 }
             }
