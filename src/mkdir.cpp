@@ -54,11 +54,6 @@ int main(int argc, char *argv[])
     else {
         ArgumentCollection* argcoll = new ArgumentCollection(argc, argv, argumentDefinitions);
 
-        std::cout << "help: " << argcoll->getArgumentValue("help") << std::endl;
-        std::cout << "parents: " << argcoll->getArgumentValue("parents") << std::endl;
-        std::cout << "verbose: " << argcoll->getArgumentValue("verbose") << std::endl;
-        std::cout << "mode: " << argcoll->getArgumentValue("mode") << std::endl;
-
         if(argcoll->getArgumentValue("help").compare("true") == 0) {
             printHelpMessage();
         } else if(argcoll->getExtras().empty()) {

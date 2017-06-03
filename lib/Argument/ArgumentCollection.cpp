@@ -67,8 +67,7 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
 
 std::string ArgumentCollection::getArgumentValue(std::string argumentName)
 {
-    std::map<std::string, std::string>* argument = this->getArgument(argumentName);
-    return (*argument)["value"]; //should be safe if smart programmer
+    return (*this->getArgument(argumentName))["value"]; //should be safe if smart programmer
 }
 
 std::vector<std::string> ArgumentCollection::getExtras()

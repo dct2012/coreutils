@@ -6,7 +6,7 @@ HelpMessage::HelpMessage(std::string header, std::map<std::string, std::map<std:
     for (std::pair<const std::string, std::map<std::string, std::string>>& argument : argumentDefinitions) {
         this->help += " -" + argument.second["shortOption"] + ", --" + argument.second["longOption"];
         if(argument.second["hasOptions"] == "true") {
-            this->help += " value";
+            this->help += " [value]";
         }
         this->help += "\t\t" + argument.second["description"] + "\n";
     }
