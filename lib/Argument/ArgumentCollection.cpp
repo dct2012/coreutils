@@ -52,7 +52,7 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
                 for(unsigned int j = 0; j < argumentName.length(); j++) {
                     argument = this->getArgument(std::string(1, argumentName[j]));
                     if(argument != nullptr) {
-                        if((j == (argumentName.length() - 1))&&((i + 1) > count)&&(rawArguments[i + 1][0] != '-')) {
+                        if((j == (argumentName.length() - 1))&&((i + 1) < count)&&(rawArguments[i + 1][0] != '-')) {
                             (*argument)["value"] = rawArguments[i + 1];
                             i++;
                         } else {

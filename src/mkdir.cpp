@@ -31,7 +31,7 @@ std::map<std::string, std::map<std::string, std::string>> argumentDefinitions = 
     }},
     {"mode", {
         {"longOption", "mode"},
-        {"shortOption", "h"},
+        {"shortOption", "m"},
         {"description", "set file to mode"},
         {"hasOptions", "true"},
         {"value", "0777"}
@@ -64,18 +64,17 @@ int main(int argc, char *argv[])
             std::vector<std::string> dir = argcoll->getExtras();
 
             for(unsigned int i = 0; i < dir.size(); i++) {
-                std::string mode = argcoll->getArgumentValue("mode");
                 if(argcoll->getArgumentValue("parents").compare("true") == 0) {
                     FileOperations::makedirp(
                         dir[i].c_str(),
-                        TextOperations::stringToInt(mode),
+                        TextOperations::stringToModeT(argcoll->getArgumentValue("mode")),
                         (argcoll->getArgumentValue("verbose").compare("true") == 0)
                     );
                 }
                 else {
                     FileOperations::makedir(
                         dir[i].c_str(),
-                        TextOperations::stringToInt(mode),
+                        TextOperations::stringToModeT(argcoll->getArgumentValue("mode")),
                         (argcoll->getArgumentValue("verbose").compare("true") == 0)
                     );
                 }
