@@ -28,6 +28,11 @@ void ArgumentCollection::updateArgument(std::string argumentName, std::string va
     }
 }
 
+bool ArgumentCollection::hasParsableOption(std::map<std::string, std::string>* argument, int i, int count, char** rawArguments)
+{
+    return ((*argument)["hasOptions"].compare("true") == 0 && i + 1 < count && rawArguments[i + 1][0] != '-');
+}
+
 void ArgumentCollection::parseCommandLineArguments(int count, char** rawArguments)
 {
     // i = 1 to skip command name
@@ -43,7 +48,7 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
 
             std::map<std::string, std::string>* argument = this->getArgument(argumentName);
             if(argument != nullptr) {
-                if((*argument)["hasOptions"].compare("true") == 0 && rawArguments[i + 1][0] != '-') {
+                if(this->hasParsableOption(argument, i, count, rawArguments)) {
                     (*argument)["value"] = rawArguments[i + 1];
                 } else {
                     (*argument)["value"] = "true";
@@ -52,7 +57,7 @@ void ArgumentCollection::parseCommandLineArguments(int count, char** rawArgument
                 for(unsigned int j = 0; j < argumentName.length(); j++) {
                     argument = this->getArgument(std::string(1, argumentName[j]));
                     if(argument != nullptr) {
-                        if((j == (argumentName.length() - 1))&&((i + 1) < count)&&(rawArguments[i + 1][0] != '-')) {
+                        if(this->hasParsableOption(argument, i, count, rawArguments)) {
                             (*argument)["value"] = rawArguments[i + 1];
                             i++;
                         } else {

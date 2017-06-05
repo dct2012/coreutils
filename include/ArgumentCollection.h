@@ -11,6 +11,7 @@ class ArgumentCollection
         void parseCommandLineArguments(int, char**);
         void updateArgument(std::string, std::string);
         std::map<std::string, std::string>* getArgument(std::string);
+        bool hasParsableOption(std::map<std::string, std::string>*, int, int, char**);
 
     public:
         ArgumentCollection(int, char**, std::map<std::string, std::map<std::string, std::string>>);
