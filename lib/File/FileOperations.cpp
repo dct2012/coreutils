@@ -40,10 +40,16 @@ namespace FileOperations
         return out;
     }
 
-    bool isDirectory(char* src)
+    std::vector<std::string> getFileByLine(std::string file)
+    {
+        FileReader* source = new FileReader(const_cast<char*>(file.c_str()));
+        return source->getFileByLine();
+    }
+
+    bool isDirectory(std::string src)
     {
         try {
-            FileStat* fs = new FileStat(src);
+            FileStat* fs = new FileStat(src.c_str());
             return fs->isDirectory();
         }
         catch(std::exception& e) {
@@ -55,22 +61,19 @@ namespace FileOperations
 
     bool pathExists(const char *dir)
     {
-        return (access(dir, F_OK) == 0);
+        return (access(dir, F_OK) != -1);
     }
 
     void makedir(const char* dir, mode_t mode, bool vflag)
     {
         //TODO: Have destiguishable errors
         if(pathExists(dir)) {
-            std::stringstream message;
-            message << "mkdir: cannot create directory " << dir << ", file exists";
-            throw std::runtime_error(message.str());
+            std::string message = std::string("mkdir: cannot create directory ") + dir + ", file exists";
+            throw message;
         }
 
         if(mkdir(dir, mode) == -1) {
-            std::stringstream message;
-            message << "mkdir: cannot create directory " << dir << ", c mkdir() failed";
-            throw std::runtime_error(message.str());
+            throw std::string("mkdir: cannot create directory ") + dir + ", c mkdir() failed";
         }
 
         if(vflag) {
@@ -90,7 +93,7 @@ namespace FileOperations
             path += directoryName;
             try {
                 makedir(path.c_str(), mode, vflag);
-            } catch(std::exception e) {}
+            } catch(int e) {/*TODO: proper error handling*/}
             path += "/";
         }
     }
