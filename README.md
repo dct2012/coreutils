@@ -17,7 +17,7 @@ File utilities
 |install | Copies files and set attributes
 |ln | Creates a link to a file
 |ls | Lists the files in a directory
-|mkdir | Creates a directory
+|~~mkdir~~ | ~~Creates a directory~~
 |mkfifo | Makes named pipes (FIFOs)
 |mknod | Makes block or character special files
 |mktemp | Creates a temporary file or directory
